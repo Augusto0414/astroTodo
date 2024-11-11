@@ -12,7 +12,16 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/svelte": "^5.7.3",
+    "@astrojs/tailwind": "^5.1.2",
     "astro": "^4.16.10",
+    "axios": "^1.7.7",
+    "svelte": "^4.2.19",
+    "svelte-preprocess": "^6.0.3",
     "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.48",
+    "tailwindcss": "^3.4.14"
   }
 }
