@@ -3,8 +3,8 @@
   import { writable } from "svelte/store";
   import axios from "axios";
 
-  const baseURL = import.meta.env.PUBLIC_API_BASE_URL;
-  const API_BASE_URL = baseURL.trim().replace(/\/$/, "").replace(/;$/, "");
+  // const baseURL = import.meta.env.PUBLIC_API_BASE_URL || "";
+  // const API_BASE_URL = baseURL.trim().replace(/\/$/, "").replace(/;$/, "");
 
   interface Todo {
     id: string;
@@ -16,8 +16,25 @@
   const todos = writable<Todo[]>([]);
   let newTodo: Todo = { id: "", title: "", description: "", completed: false };
 
+  let API_BASE_URL = "";
+
+  // Cargar API_BASE_URL desde config.js en tiempo de ejecución
+  onMount(async () => {
+    try {
+      const response = await fetch("/config.js");
+      const configScript = await response.text();
+      eval(configScript); // Cargar window.API_BASE_URL
+
+      API_BASE_URL = window.API_BASE_URL || ""; // Asignar la URL de API
+      fetchTodos();
+    } catch (error) {
+      console.error("Error al cargar API_BASE_URL:", error);
+    }
+  });
+
   async function fetchTodos() {
     try {
+      console.log(`${API_BASE_URL}/todo`);
       const response = await axios.get(`${API_BASE_URL}/todo`);
       todos.set(response.data);
     } catch (error) {

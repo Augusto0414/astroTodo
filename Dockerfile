@@ -1,25 +1,17 @@
 # Etapa 1: Construcción del proyecto
-FROM node:18 AS builder
+FROM node:18-alpine AS builder
 
-# Configura el directorio de trabajo
 WORKDIR /app
 
 # Copia los archivos de configuración de dependencias
 COPY package.json package-lock.json ./
-
-# Verifica que los archivos package.json se copiaron
-RUN ls -l /app
-
-# Instala las dependencias
 RUN npm install
-
-# Instala astro globalmente
 RUN npm install -g astro
 
 # Copia los archivos del proyecto
 COPY . .
 
-# Ejecuta la construcción del proyecto
+# Construye el proyecto
 RUN npm run build
 
 # Etapa 2: Servidor de producción
@@ -30,11 +22,13 @@ WORKDIR /app
 # Copia los archivos construidos desde la etapa anterior
 COPY --from=builder /app/dist /app
 
-# Define las variables de entorno necesarias
-ENV PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL}
+# Agrega un archivo de configuración en tiempo de ejecución
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expone el puerto de la app
 EXPOSE 3000
 
-# Sirve la app construida en producción
+# Ejecuta el script de configuración en tiempo de ejecución
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["npx", "serve", "-s", ".", "-l", "3000"]
