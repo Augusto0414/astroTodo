@@ -2,7 +2,10 @@
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import axios from "axios";
-  import { API_BASE_URL } from "../config.ts";
+  //import { API_BASE_URL } from "../config.ts";
+
+  const baseURL = import.meta.env.PUBLIC_API_BASE_URL;
+  const API_BASE_URL = baseURL.trim().replace(/\/$/, "").replace(/;$/, "");
 
   interface Todo {
     id: string;
