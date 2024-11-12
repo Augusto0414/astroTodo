@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import axios from "axios";
-  //import { API_BASE_URL } from "../config.ts";
 
   const baseURL = import.meta.env.PUBLIC_API_BASE_URL;
   const API_BASE_URL = baseURL.trim().replace(/\/$/, "").replace(/;$/, "");
@@ -68,7 +67,7 @@
       const response = await axios.put(`${API_BASE_URL}/todo/${id}`, updatedTodo);
 
       if (response.status === 200) {
-        fetchTodos();
+        fetchTodos(); // Refresca la lista después de la actualización
       } else {
         console.error("Error al actualizar el estado de la tarea:", response);
         alert("Hubo un error al actualizar la tarea.");
@@ -95,7 +94,6 @@
 
 <div class="todo-app max-w-lg mx-auto bg-white p-8 rounded-lg shadow-xl mt-8">
   <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">Mis Tareas</h1>
-
   <form on:submit|preventDefault={addTodo} class="mb-8 space-y-4">
     <div>
       <input
@@ -120,7 +118,6 @@
       </button>
     </div>
   </form>
-
   <!-- Lista de tareas -->
   <ul class="space-y-6">
     {#each $todos as todo (todo.id)}
@@ -136,16 +133,14 @@
             {todo.description}
           </span>
         </div>
-
         <div class="flex space-x-4 items-center">
           <!-- Checkbox para marcar como completa/incompleta -->
           <input
             type="checkbox"
-            bind:checked={todo.completed}
-            on:change={() => toggleTodoCompletion(todo.id)}
+            checked={todo.completed}
+            on:change={() => toggleTodoCompletion(todo.id, todo.completed)}
             class="h-6 w-6 text-blue-500 cursor-pointer"
           />
-
           <!-- Botón para eliminar tarea (NO tachado) -->
           <button
             on:click={() => deleteTodo(todo.id)}
