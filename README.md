@@ -39,5 +39,5 @@ https://hub.docker.com/repository/docker/augusto04/astro-app/general
 
 ```plaintext
 #Es necesario proporcionar la varialbe de entorno API_BASE_URL
-docker run -e API_BASE_URL=http://localhost:8000 -dp 3000:3000 astro-app25:3
+docker run -e API_BASE_URL=http://localhost:8000 -dp 3000:3000 astro-app
 ```
