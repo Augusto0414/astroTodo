@@ -29,6 +29,8 @@ RUN chmod +x /entrypoint.sh
 # Expone el puerto de la app
 EXPOSE 3000
 
+ENV API_BASE_URL=$API_BASE_URL
+
 # Ejecuta el script de configuración en tiempo de ejecución
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["npx", "serve", "-s", ".", "-l", "3000"]
